@@ -282,3 +282,37 @@ export async function rejectParentAccount(
   return json.parent;
 }
 
+export interface AwsDatabaseStatus {
+  configured: boolean;
+  connected: boolean;
+  activeEngine: string;
+  region: string;
+  tableName: string;
+  maskedAccessKey?: string;
+  itemCount?: number;
+  tableStatus?: string;
+  error?: string;
+  localNoticesCount?: number;
+  localAuditCount?: number;
+  localParentsCount?: number;
+}
+
+export async function fetchAwsStatus(): Promise<AwsDatabaseStatus> {
+  const res = await fetch(`${API_BASE}/aws/status`);
+  return res.json();
+}
+
+export async function triggerAwsSync(token?: string | null): Promise<{ success: boolean; message: string; status: AwsDatabaseStatus }> {
+  const authToken = token || localStorage.getItem('amka_token') || '';
+  const res = await fetch(`${API_BASE}/aws/sync`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error || 'Failed to sync with AWS DynamoDB');
+  return json;
+}
+

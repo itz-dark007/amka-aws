@@ -1,6 +1,6 @@
 {
   "name": "AMKA Digital Notice Board",
-  "description": "Institutional digital notice-board and announcements platform with public circular feed, administrative workspace, parent verification portal with admin approvals, and campus TV kiosk display.",
+  "description": "Institutional digital notice-board and announcements platform with public circular feed, administrative workspace, parent verification portal with admin approvals, campus TV kiosk display, and AWS DynamoDB database integration.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -4,6 +4,7 @@ import { createServer as createViteServer } from 'vite';
 import { store } from './server/store';
 import { authenticateUser, optionalAuthenticateUser, requireRole, AuthenticatedRequest } from './server/auth';
 import { summarizeCircular } from './server/ai';
+import { getDynamoStatus, isDynamoConfigured } from './server/dynamodb';
 
 const app = express();
 const PORT = 3000;
@@ -28,6 +29,7 @@ app.get('/api/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
     system: 'AMKA Institutional Notice Board & Broadcast Service',
+    database: isDynamoConfigured() ? 'AWS DynamoDB' : 'Local Persistence (JSON cache)',
     time: new Date().toISOString(),
   });
 });
@@ -412,6 +414,53 @@ app.patch(
       parent: rejected,
       message: `Parent application for ${rejected.name} has been rejected.`,
     });
+  }
+);
+
+// ==================== 10. AWS DYNAMODB STATUS & SYNC ROUTES ====================
+
+// AWS DynamoDB Database Status & Health Diagnostics
+app.get('/api/aws/status', async (_req: Request, res: Response) => {
+  try {
+    const status = await getDynamoStatus();
+    res.json({
+      ...status,
+      activeEngine: status.connected ? 'AWS DynamoDB' : 'Local File Persistence',
+      localNoticesCount: store.getNotices({ status: 'all' }).length,
+      localAuditCount: store.getAuditLogs().length,
+      localParentsCount: store.getParents('all').length,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      configured: false,
+      connected: false,
+      activeEngine: 'Local File Persistence',
+      error: err.message || 'Error checking AWS DynamoDB status',
+    });
+  }
+});
+
+// Force manual synchronization between Local Store and AWS DynamoDB
+app.post(
+  '/api/aws/sync',
+  optionalAuthenticateUser,
+  async (_req: AuthenticatedRequest, res: Response) => {
+    try {
+      if (!isDynamoConfigured()) {
+        return res.status(400).json({
+          error: 'AWS DynamoDB credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) are not set in environment.',
+        });
+      }
+      await store.initDynamoSync();
+      const status = await getDynamoStatus();
+      res.json({
+        success: true,
+        message: 'Synchronized with AWS DynamoDB successfully.',
+        status,
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Sync failed' });
+    }
   }
 );
 

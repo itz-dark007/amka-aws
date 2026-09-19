@@ -3,6 +3,17 @@ import path from 'path';
 import { Response } from 'express';
 import { Notice, AuditEntry, User, Department, ParentUser } from '../src/types';
 import { INITIAL_NOTICES, INITIAL_DEPARTMENTS, DEMO_USERS, INITIAL_AUDIT_LOGS, INITIAL_PARENTS } from './data';
+import {
+  isDynamoConfigured,
+  ensureTable,
+  putNoticeToDynamo,
+  deleteNoticeFromDynamo,
+  fetchAllNoticesFromDynamo,
+  putAuditToDynamo,
+  fetchAllAuditsFromDynamo,
+  putParentToDynamo,
+  fetchAllParentsFromDynamo,
+} from './dynamodb';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const NOTICES_FILE = path.join(DATA_DIR, 'notices.json');
@@ -16,6 +27,7 @@ class NoticeStore {
   private sseClients: Set<Response> = new Set();
   private departments: Department[] = INITIAL_DEPARTMENTS;
   private users: User[] = DEMO_USERS;
+  private dynamoSynced = false;
 
   constructor() {
     this.initStore();
@@ -54,11 +66,74 @@ class NoticeStore {
       // Check auto-expiry on startup and setup interval
       this.checkExpiredNotices();
       setInterval(() => this.checkExpiredNotices(), 60000);
+
+      // Asynchronously connect & synchronize with AWS DynamoDB if configured
+      this.initDynamoSync();
     } catch (err) {
       console.error('Error initializing store:', err);
       this.notices = [...INITIAL_NOTICES];
       this.auditLogs = [...INITIAL_AUDIT_LOGS];
       this.parents = [...INITIAL_PARENTS];
+    }
+  }
+
+  public async initDynamoSync() {
+    if (!isDynamoConfigured()) {
+      return;
+    }
+
+    try {
+      console.log('[Store] AWS DynamoDB credentials detected. Verifying table...');
+      const tableCheck = await ensureTable();
+      if (!tableCheck.ready) {
+        console.warn('[Store] DynamoDB table not ready yet:', tableCheck.error);
+        return;
+      }
+
+      // 1. Sync Notices
+      const dynamoNotices = await fetchAllNoticesFromDynamo();
+      if (dynamoNotices && dynamoNotices.length > 0) {
+        console.log(`[Store] Loaded ${dynamoNotices.length} notices from AWS DynamoDB.`);
+        this.notices = dynamoNotices;
+        this.saveNoticesToDisk();
+      } else {
+        // DynamoDB is empty, seed from current store
+        console.log(`[Store] Seeding ${this.notices.length} local notices to AWS DynamoDB...`);
+        for (const n of this.notices) {
+          await putNoticeToDynamo(n);
+        }
+      }
+
+      // 2. Sync Audit Logs
+      const dynamoAudits = await fetchAllAuditsFromDynamo();
+      if (dynamoAudits && dynamoAudits.length > 0) {
+        console.log(`[Store] Loaded ${dynamoAudits.length} audit logs from AWS DynamoDB.`);
+        this.auditLogs = dynamoAudits;
+        this.saveAuditToDisk();
+      } else {
+        console.log(`[Store] Seeding ${this.auditLogs.length} audit logs to AWS DynamoDB...`);
+        for (const a of this.auditLogs) {
+          await putAuditToDynamo(a);
+        }
+      }
+
+      // 3. Sync Parents
+      const dynamoParents = await fetchAllParentsFromDynamo();
+      if (dynamoParents && dynamoParents.length > 0) {
+        console.log(`[Store] Loaded ${dynamoParents.length} parent records from AWS DynamoDB.`);
+        this.parents = dynamoParents;
+        this.saveParentsToDisk();
+      } else {
+        console.log(`[Store] Seeding ${this.parents.length} parent records to AWS DynamoDB...`);
+        for (const p of this.parents) {
+          await putParentToDynamo(p);
+        }
+      }
+
+      this.dynamoSynced = true;
+      console.log('[Store] Successfully synchronized with AWS DynamoDB.');
+    } catch (err: any) {
+      console.error('[Store] Error during DynamoDB synchronization:', err?.message || err);
     }
   }
 
@@ -168,6 +243,9 @@ class NoticeStore {
       this.auditLogs = this.auditLogs.slice(0, 500);
     }
     this.saveAuditToDisk();
+    if (isDynamoConfigured()) {
+      putAuditToDynamo(entry).catch((err) => console.error('[DynamoDB] audit error:', err));
+    }
   }
 
   public getNotices(filter?: {
@@ -292,6 +370,9 @@ class NoticeStore {
 
     this.notices.unshift(newNotice);
     this.saveNoticesToDisk();
+    if (isDynamoConfigured()) {
+      putNoticeToDynamo(newNotice).catch((err) => console.error('[DynamoDB] createNotice error:', err));
+    }
 
     this.addAuditEntry({
       id: 'aud_' + Date.now(),
@@ -325,6 +406,9 @@ class NoticeStore {
 
     this.notices[idx] = updated;
     this.saveNoticesToDisk();
+    if (isDynamoConfigured()) {
+      putNoticeToDynamo(updated).catch((err) => console.error('[DynamoDB] updateNotice error:', err));
+    }
 
     this.addAuditEntry({
       id: 'aud_' + Date.now(),
@@ -348,6 +432,9 @@ class NoticeStore {
     notice.isPinned = !notice.isPinned;
     notice.updatedAt = new Date().toISOString();
     this.saveNoticesToDisk();
+    if (isDynamoConfigured()) {
+      putNoticeToDynamo(notice).catch((err) => console.error('[DynamoDB] togglePin error:', err));
+    }
 
     this.addAuditEntry({
       id: 'aud_' + Date.now(),
@@ -416,6 +503,9 @@ class NoticeStore {
 
     const [removed] = this.notices.splice(idx, 1);
     this.saveNoticesToDisk();
+    if (isDynamoConfigured()) {
+      deleteNoticeFromDynamo(removed.id).catch((err) => console.error('[DynamoDB] deleteNotice error:', err));
+    }
 
     this.addAuditEntry({
       id: 'aud_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
@@ -437,7 +527,9 @@ class NoticeStore {
     if (notice) {
       notice.viewsCount = (notice.viewsCount || 0) + 1;
       this.saveNoticesToDisk();
-      // Light broadcast or throttle
+      if (isDynamoConfigured()) {
+        putNoticeToDynamo(notice).catch((err) => console.error('[DynamoDB] incrementViews error:', err));
+      }
     }
   }
 
@@ -446,6 +538,9 @@ class NoticeStore {
     if (notice) {
       notice.acknowledgementsCount = (notice.acknowledgementsCount || 0) + 1;
       this.saveNoticesToDisk();
+      if (isDynamoConfigured()) {
+        putNoticeToDynamo(notice).catch((err) => console.error('[DynamoDB] toggleAcknowledge error:', err));
+      }
       this.broadcast('notice_updated', notice);
       return notice.acknowledgementsCount;
     }
@@ -506,6 +601,9 @@ class NoticeStore {
 
     this.parents.unshift(newParent);
     this.saveParentsToDisk();
+    if (isDynamoConfigured()) {
+      putParentToDynamo(newParent).catch((err) => console.error('[DynamoDB] registerParent error:', err));
+    }
 
     this.addAuditEntry({
       id: 'aud_' + Date.now(),
@@ -536,6 +634,9 @@ class NoticeStore {
     }
 
     this.saveParentsToDisk();
+    if (isDynamoConfigured()) {
+      putParentToDynamo(parent).catch((err) => console.error('[DynamoDB] approveParent error:', err));
+    }
 
     this.addAuditEntry({
       id: 'aud_' + Date.now(),
@@ -561,6 +662,9 @@ class NoticeStore {
     parent.rejectionReason = reason || 'Verification failed against institutional student roster.';
 
     this.saveParentsToDisk();
+    if (isDynamoConfigured()) {
+      putParentToDynamo(parent).catch((err) => console.error('[DynamoDB] rejectParent error:', err));
+    }
 
     this.addAuditEntry({
       id: 'aud_' + Date.now(),
