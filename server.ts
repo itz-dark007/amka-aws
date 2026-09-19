@@ -464,6 +464,31 @@ app.post(
   }
 );
 
+// Push all dummy / initial dataset to AWS DynamoDB
+app.post(
+  '/api/aws/seed-dummy',
+  optionalAuthenticateUser,
+  async (_req: AuthenticatedRequest, res: Response) => {
+    try {
+      if (!isDynamoConfigured()) {
+        return res.status(400).json({
+          error: 'AWS DynamoDB credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) are not set in environment.',
+        });
+      }
+      const result = await store.pushDummyDataToDynamo();
+      const status = await getDynamoStatus();
+      res.json({
+        success: true,
+        message: `Successfully pushed dummy data to AWS DynamoDB: ${result.noticesCount} notices, ${result.auditsCount} audit logs, and ${result.parentsCount} parent accounts.`,
+        result,
+        status,
+      });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Failed to push dummy data to DynamoDB' });
+    }
+  }
+);
+
 // Setup Vite middleware or static serving
 async function start() {
   if (process.env.NODE_ENV !== 'production') {

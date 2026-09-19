@@ -300,10 +300,11 @@ export async function fetchAllParentsFromDynamo(): Promise<ParentUser[] | null> 
     const res = await client.send(
       new ScanCommand({
         TableName: cfg.tableName,
-        FilterExpression: 'entityType = :type OR begins_with(id, :prefix)',
+        FilterExpression: 'entityType = :type OR begins_with(id, :prefix) OR begins_with(id, :prefix2)',
         ExpressionAttributeValues: {
           ':type': 'parent',
           ':prefix': 'prnt_',
+          ':prefix2': 'parent_',
         },
       })
     );

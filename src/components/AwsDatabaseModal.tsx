@@ -10,8 +10,9 @@ import {
   Shield,
   X,
   HardDrive,
+  UploadCloud,
 } from 'lucide-react';
-import { fetchAwsStatus, triggerAwsSync, AwsDatabaseStatus } from '../lib/api';
+import { fetchAwsStatus, triggerAwsSync, pushDummyDataToAws, AwsDatabaseStatus } from '../lib/api';
 
 interface AwsDatabaseModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export const AwsDatabaseModal: React.FC<AwsDatabaseModalProps> = ({
   const [status, setStatus] = useState<AwsDatabaseStatus | null>(null);
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [pushingDummy, setPushingDummy] = useState(false);
   const [syncMessage, setSyncMessage] = useState<string | null>(null);
   const [syncError, setSyncError] = useState<string | null>(null);
 
@@ -61,6 +63,21 @@ export const AwsDatabaseModal: React.FC<AwsDatabaseModalProps> = ({
       setSyncError(err.message || 'Synchronization failed');
     } finally {
       setSyncing(false);
+    }
+  };
+
+  const handlePushDummy = async () => {
+    setPushingDummy(true);
+    setSyncMessage(null);
+    setSyncError(null);
+    try {
+      const res = await pushDummyDataToAws(token);
+      setSyncMessage(res.message);
+      setStatus(res.status);
+    } catch (err: any) {
+      setSyncError(err.message || 'Failed to push dummy data');
+    } finally {
+      setPushingDummy(false);
     }
   };
 
@@ -247,15 +264,28 @@ export const AwsDatabaseModal: React.FC<AwsDatabaseModalProps> = ({
 
           <div className="flex items-center space-x-2">
             {isConfigured && (
-              <button
-                id="aws-db-sync-now-btn"
-                onClick={handleSyncNow}
-                disabled={syncing}
-                className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition-colors disabled:opacity-50"
-              >
-                <Cloud className="w-3.5 h-3.5" />
-                <span>{syncing ? 'Synchronizing...' : 'Sync to DynamoDB'}</span>
-              </button>
+              <>
+                <button
+                  id="aws-db-push-dummy-btn"
+                  onClick={handlePushDummy}
+                  disabled={pushingDummy || syncing}
+                  title="Push sample/dummy notices, audits, and parent applications to AWS DynamoDB"
+                  className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-950 shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  <UploadCloud className="w-3.5 h-3.5" />
+                  <span>{pushingDummy ? 'Pushing Data...' : 'Push Dummy Data'}</span>
+                </button>
+
+                <button
+                  id="aws-db-sync-now-btn"
+                  onClick={handleSyncNow}
+                  disabled={syncing || pushingDummy}
+                  className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition-colors disabled:opacity-50 cursor-pointer"
+                >
+                  <Cloud className="w-3.5 h-3.5" />
+                  <span>{syncing ? 'Synchronizing...' : 'Sync to DynamoDB'}</span>
+                </button>
+              </>
             )}
 
             <button

@@ -1,212 +1,233 @@
 [
   {
-    "id": "aud_1789821567709_pmn5",
-    "noticeId": "not_003",
     "noticeTitle": "Annual Campus Placement Drive 2026-27: Tier-1 Technology Firms",
-    "action": "delete",
     "performedBy": "Dr. Alistair Vance",
+    "entityType": "audit",
+    "action": "delete",
     "role": "super_admin",
+    "noticeId": "not_003",
     "timestamp": "2026-09-19T12:39:27.709Z",
-    "details": "Notice permanently deleted from repository"
+    "details": "Notice permanently deleted from repository",
+    "id": "aud_1789821567709_pmn5"
   },
   {
-    "id": "aud_1789821564053_ykuo",
-    "noticeId": "not_002",
-    "noticeTitle": "Emergency Power Grid Maintenance – Engineering & Science Blocks",
-    "action": "delete",
     "performedBy": "Dr. Alistair Vance",
+    "noticeTitle": "Emergency Power Grid Maintenance – Engineering & Science Blocks",
+    "entityType": "audit",
+    "action": "delete",
     "role": "super_admin",
+    "noticeId": "not_002",
     "timestamp": "2026-09-19T12:39:24.053Z",
-    "details": "Notice permanently deleted from repository"
+    "details": "Notice permanently deleted from repository",
+    "id": "aud_1789821564053_ykuo"
   },
   {
-    "id": "aud_1789821414123",
-    "noticeId": "not_001",
     "noticeTitle": "Final Examination Timetable & Admit Card Issuance (Spring 2026)",
-    "action": "delete",
     "performedBy": "Dr. Alistair Vance",
+    "entityType": "audit",
+    "action": "delete",
     "role": "super_admin",
+    "noticeId": "not_001",
     "timestamp": "2026-09-19T12:36:54.123Z",
-    "details": "Notice permanently deleted from repository"
+    "details": "Notice permanently deleted from repository",
+    "id": "aud_1789821414123"
   },
   {
-    "id": "aud_1789821361169",
-    "noticeId": "not_1789816224416_tgjmb",
-    "noticeTitle": "I'm here at Bharath Builds by AWS",
-    "action": "delete",
     "performedBy": "Dr. Alistair Vance",
+    "noticeTitle": "I'm here at Bharath Builds by AWS",
+    "entityType": "audit",
+    "action": "delete",
     "role": "super_admin",
+    "noticeId": "not_1789816224416_tgjmb",
     "timestamp": "2026-09-19T12:36:01.169Z",
-    "details": "Notice permanently deleted from repository"
+    "details": "Notice permanently deleted from repository",
+    "id": "aud_1789821361169"
   },
   {
-    "id": "aud_1789821348168",
-    "noticeId": "not_1789819507557_y343k",
     "noticeTitle": "Blah",
+    "performedBy": "Dr. Alistair Vance",
+    "entityType": "audit",
     "action": "delete",
-    "performedBy": "Dr. Alistair Vance",
     "role": "super_admin",
+    "noticeId": "not_1789819507557_y343k",
     "timestamp": "2026-09-19T12:35:48.168Z",
-    "details": "Notice permanently deleted from repository"
+    "details": "Notice permanently deleted from repository",
+    "id": "aud_1789821348168"
   },
   {
-    "id": "aud_1789820280742",
-    "noticeId": "system",
     "noticeTitle": "Parent Approved: Sarah M. Jenkins",
-    "action": "update",
     "performedBy": "Dr. Alistair Vance",
+    "entityType": "audit",
+    "action": "update",
     "role": "super_admin",
+    "noticeId": "system",
     "timestamp": "2026-09-19T12:18:00.742Z",
-    "details": "Approved guardian access for student Chloe Jenkins (AMKA-2024-BIO-077)"
+    "details": "Approved guardian access for student Chloe Jenkins (AMKA-2024-BIO-077)",
+    "id": "aud_1789820280742"
   },
   {
-    "id": "aud_1789820267710",
-    "noticeId": "system",
     "noticeTitle": "Parent Approved: Kusuma",
-    "action": "update",
     "performedBy": "Dr. Alistair Vance",
+    "entityType": "audit",
+    "action": "update",
     "role": "super_admin",
+    "noticeId": "system",
     "timestamp": "2026-09-19T12:17:47.709Z",
-    "details": "Approved guardian access for student Shashank Kumar (AMKA-2025-CS-204)"
+    "details": "Approved guardian access for student Shashank Kumar (AMKA-2025-CS-204)",
+    "id": "aud_1789820267710"
   },
   {
-    "id": "aud_1789820245255",
-    "noticeId": "not_1789820245233_7on2g",
+    "performedBy": "Dr. Alistair Vance",
     "noticeTitle": "jABD svjk",
+    "entityType": "audit",
     "action": "create",
-    "performedBy": "Dr. Alistair Vance",
     "role": "super_admin",
+    "noticeId": "not_1789820245233_7on2g",
     "timestamp": "2026-09-19T12:17:25.233Z",
-    "details": "Created notice with status: published, urgency: normal"
+    "details": "Created notice with status: published, urgency: normal",
+    "id": "aud_1789820245255"
   },
   {
-    "id": "aud_1789820066971",
-    "noticeId": "not_1789819507557_y343k",
     "noticeTitle": "Blah",
-    "action": "update",
     "performedBy": "Prof. Meera Sen",
+    "entityType": "audit",
+    "action": "update",
     "role": "department_head",
+    "noticeId": "not_1789819507557_y343k",
     "timestamp": "2026-09-19T12:14:26.951Z",
-    "details": "Updated fields: title, content, summary, department, category, urgency, status, isPinned, expiryDate, tags, targetAudience, attachments, publishDate"
+    "details": "Updated fields: title, content, summary, department, category, urgency, status, isPinned, expiryDate, tags, targetAudience, attachments, publishDate",
+    "id": "aud_1789820066971"
   },
   {
-    "id": "aud_1789819507577",
-    "noticeId": "not_1789819507557_y343k",
+    "performedBy": "Prof. Meera Sen",
     "noticeTitle": "Blah",
+    "entityType": "audit",
     "action": "create",
-    "performedBy": "Prof. Meera Sen",
     "role": "department_head",
+    "noticeId": "not_1789819507557_y343k",
     "timestamp": "2026-09-19T12:05:07.557Z",
-    "details": "Created notice with status: draft, urgency: urgent"
+    "details": "Created notice with status: draft, urgency: urgent",
+    "id": "aud_1789819507577"
   },
   {
-    "id": "aud_1789819338864",
-    "noticeId": "system",
+    "performedBy": "Prof. Meera Sen",
     "noticeTitle": "Parent Registration Declined: Kusuma",
+    "entityType": "audit",
     "action": "update",
-    "performedBy": "Prof. Meera Sen",
     "role": "department_head",
+    "noticeId": "system",
     "timestamp": "2026-09-19T12:02:18.864Z",
-    "details": "Declined parent request. Reason: Student Roll Number verification mismatch with registrar roster."
+    "details": "Declined parent request. Reason: Student Roll Number verification mismatch with registrar roster.",
+    "id": "aud_1789819338864"
   },
   {
-    "id": "aud_1789819304397",
-    "noticeId": "system",
-    "noticeTitle": "Parent Registration: Kusuma (Mother of Shashank Kumar)",
-    "action": "create",
     "performedBy": "Kusuma",
+    "noticeTitle": "Parent Registration: Kusuma (Mother of Shashank Kumar)",
+    "entityType": "audit",
+    "action": "create",
     "role": "parent_applicant",
+    "noticeId": "system",
     "timestamp": "2026-09-19T12:01:44.396Z",
-    "details": "New guardian verification request submitted for student roll: AMKA-2025-CS-204. Requires administrative approval."
+    "details": "New guardian verification request submitted for student roll: AMKA-2025-CS-204. Requires administrative approval.",
+    "id": "aud_1789819304397"
   },
   {
-    "id": "aud_1789818903488",
-    "noticeId": "system",
     "noticeTitle": "Parent Approved: Mr. David K. Chen",
-    "action": "update",
     "performedBy": "Prof. Meera Sen",
-    "role": "department_head",
-    "timestamp": "2026-09-19T11:55:03.487Z",
-    "details": "Approved guardian access for student Marcus Chen (AMKA-2025-ENG-118)"
-  },
-  {
-    "id": "aud_1789816224430",
-    "noticeId": "not_1789816224416_tgjmb",
-    "noticeTitle": "I'm here at Bharath Builds by AWS",
-    "action": "create",
-    "performedBy": "Dr. Alistair Vance",
-    "role": "super_admin",
-    "timestamp": "2026-09-19T11:10:24.416Z",
-    "details": "Created notice with status: published, urgency: normal"
-  },
-  {
-    "id": "aud_1789813749216",
-    "noticeId": "system",
-    "noticeTitle": "Parent Approved: Dr. Robert Sterling",
+    "entityType": "audit",
     "action": "update",
-    "performedBy": "Dr. Alistair Vance",
-    "role": "super_admin",
-    "timestamp": "2026-09-19T10:29:09.215Z",
-    "details": "Approved guardian access for student Liam Sterling (AMKA-2025-CS-204)"
-  },
-  {
-    "id": "aud_1789813746606",
+    "role": "department_head",
     "noticeId": "system",
+    "timestamp": "2026-09-19T11:55:03.487Z",
+    "details": "Approved guardian access for student Marcus Chen (AMKA-2025-ENG-118)",
+    "id": "aud_1789818903488"
+  },
+  {
+    "noticeTitle": "I'm here at Bharath Builds by AWS",
+    "performedBy": "Dr. Alistair Vance",
+    "entityType": "audit",
+    "action": "create",
+    "role": "super_admin",
+    "noticeId": "not_1789816224416_tgjmb",
+    "timestamp": "2026-09-19T11:10:24.416Z",
+    "details": "Created notice with status: published, urgency: normal",
+    "id": "aud_1789816224430"
+  },
+  {
+    "noticeTitle": "Parent Approved: Dr. Robert Sterling",
+    "performedBy": "Dr. Alistair Vance",
+    "entityType": "audit",
+    "action": "update",
+    "role": "super_admin",
+    "noticeId": "system",
+    "timestamp": "2026-09-19T10:29:09.215Z",
+    "details": "Approved guardian access for student Liam Sterling (AMKA-2025-CS-204)",
+    "id": "aud_1789813749216"
+  },
+  {
     "noticeTitle": "Parent Registration: Dr. Robert Sterling (Father of Liam Sterling)",
-    "action": "create",
     "performedBy": "Dr. Robert Sterling",
+    "entityType": "audit",
+    "action": "create",
     "role": "parent_applicant",
+    "noticeId": "system",
     "timestamp": "2026-09-19T10:29:06.606Z",
-    "details": "New guardian verification request submitted for student roll: AMKA-2025-CS-204. Requires administrative approval."
+    "details": "New guardian verification request submitted for student roll: AMKA-2025-CS-204. Requires administrative approval.",
+    "id": "aud_1789813746606"
   },
   {
-    "id": "aud_1789813000458",
-    "noticeId": "not_1789813000458_pabuv",
     "noticeTitle": "Convocation 2026 Academic Robes Protocol",
-    "action": "create",
     "performedBy": "Dr. Alistair Vance",
+    "entityType": "audit",
+    "action": "create",
     "role": "super_admin",
+    "noticeId": "not_1789813000458_pabuv",
     "timestamp": "2026-09-19T10:16:40.458Z",
-    "details": "Created notice with status: published, urgency: normal"
+    "details": "Created notice with status: published, urgency: normal",
+    "id": "aud_1789813000458"
   },
   {
-    "id": "aud_001",
-    "noticeId": "not_001",
-    "noticeTitle": "Final Examination Timetable & Admit Card Issuance (Spring 2026)",
-    "action": "create",
-    "performedBy": "Dr. Kevin O’Connor",
-    "role": "staff_officer",
-    "timestamp": "2026-09-18T08:30:00.000Z",
-    "details": "Initial publication with official PDF circular attached"
-  },
-  {
-    "id": "aud_002",
-    "noticeId": "not_001",
-    "noticeTitle": "Final Examination Timetable & Admit Card Issuance (Spring 2026)",
-    "action": "pin",
-    "performedBy": "Dr. Kevin O’Connor",
-    "role": "staff_officer",
-    "timestamp": "2026-09-18T08:35:00.000Z",
-    "details": "Pinned notice to priority campus bulletin"
-  },
-  {
-    "id": "aud_003",
-    "noticeId": "not_002",
     "noticeTitle": "Emergency Power Grid Maintenance – Engineering & Science Blocks",
-    "action": "create",
     "performedBy": "Dr. Alistair Vance",
-    "role": "super_admin",
-    "timestamp": "2026-09-19T06:00:00.000Z",
-    "details": "Urgent institutional facilities notice broadcast"
-  },
-  {
-    "id": "aud_004",
-    "noticeId": "not_002",
-    "noticeTitle": "Emergency Power Grid Maintenance – Engineering & Science Blocks",
+    "entityType": "audit",
     "action": "pin",
-    "performedBy": "Dr. Alistair Vance",
     "role": "super_admin",
+    "noticeId": "not_002",
     "timestamp": "2026-09-19T06:02:00.000Z",
-    "details": "Emergency pin activated for campus kiosk display ticker"
+    "details": "Emergency pin activated for campus kiosk display ticker",
+    "id": "aud_004"
+  },
+  {
+    "performedBy": "Dr. Alistair Vance",
+    "noticeTitle": "Emergency Power Grid Maintenance – Engineering & Science Blocks",
+    "entityType": "audit",
+    "action": "create",
+    "role": "super_admin",
+    "noticeId": "not_002",
+    "timestamp": "2026-09-19T06:00:00.000Z",
+    "details": "Urgent institutional facilities notice broadcast",
+    "id": "aud_003"
+  },
+  {
+    "performedBy": "Dr. Kevin O’Connor",
+    "noticeTitle": "Final Examination Timetable & Admit Card Issuance (Spring 2026)",
+    "entityType": "audit",
+    "action": "pin",
+    "role": "staff_officer",
+    "noticeId": "not_001",
+    "timestamp": "2026-09-18T08:35:00.000Z",
+    "details": "Pinned notice to priority campus bulletin",
+    "id": "aud_002"
+  },
+  {
+    "noticeTitle": "Final Examination Timetable & Admit Card Issuance (Spring 2026)",
+    "performedBy": "Dr. Kevin O’Connor",
+    "entityType": "audit",
+    "action": "create",
+    "role": "staff_officer",
+    "noticeId": "not_001",
+    "timestamp": "2026-09-18T08:30:00.000Z",
+    "details": "Initial publication with official PDF circular attached",
+    "id": "aud_001"
   }
 ]

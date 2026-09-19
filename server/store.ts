@@ -137,6 +137,86 @@ class NoticeStore {
     }
   }
 
+  public async pushDummyDataToDynamo(): Promise<{
+    success: boolean;
+    noticesCount: number;
+    auditsCount: number;
+    parentsCount: number;
+  }> {
+    if (!isDynamoConfigured()) {
+      throw new Error('AWS DynamoDB is not configured. Please set credentials in environment.');
+    }
+
+    const tableCheck = await ensureTable();
+    if (!tableCheck.ready) {
+      throw new Error(`DynamoDB table is not ready: ${tableCheck.error}`);
+    }
+
+    // Merge dummy/initial notices into current store
+    for (const initial of INITIAL_NOTICES) {
+      const existingIdx = this.notices.findIndex((n) => n.id === initial.id);
+      if (existingIdx === -1) {
+        this.notices.push(initial);
+      }
+    }
+
+    // Merge dummy/initial audit entries into current store
+    for (const initial of INITIAL_AUDIT_LOGS) {
+      const existingIdx = this.auditLogs.findIndex((a) => a.id === initial.id);
+      if (existingIdx === -1) {
+        this.auditLogs.push(initial);
+      }
+    }
+
+    // Merge dummy/initial parents into current store
+    for (const initial of INITIAL_PARENTS) {
+      const existingIdx = this.parents.findIndex((p) => p.id === initial.id);
+      if (existingIdx === -1) {
+        this.parents.push(initial);
+      }
+    }
+
+    // Write back to local cache
+    this.saveNoticesToDisk();
+    this.saveAuditToDisk();
+    this.saveParentsToDisk();
+
+    // Push all notices to AWS DynamoDB
+    let pushedNotices = 0;
+    for (const notice of this.notices) {
+      const ok = await putNoticeToDynamo(notice);
+      if (ok) pushedNotices++;
+    }
+
+    // Push all audit logs to AWS DynamoDB
+    let pushedAudits = 0;
+    for (const audit of this.auditLogs) {
+      const ok = await putAuditToDynamo(audit);
+      if (ok) pushedAudits++;
+    }
+
+    // Push all parent applications to AWS DynamoDB
+    let pushedParents = 0;
+    for (const parent of this.parents) {
+      const ok = await putParentToDynamo(parent);
+      if (ok) pushedParents++;
+    }
+
+    console.log(`[Store] Pushed dummy data to AWS DynamoDB: ${pushedNotices} notices, ${pushedAudits} audits, ${pushedParents} parents.`);
+
+    this.broadcast('store_synced', {
+      noticesCount: this.notices.length,
+      parentsCount: this.parents.length,
+    });
+
+    return {
+      success: true,
+      noticesCount: pushedNotices,
+      auditsCount: pushedAudits,
+      parentsCount: pushedParents,
+    };
+  }
+
   private saveNoticesToDisk() {
     try {
       fs.writeFileSync(NOTICES_FILE, JSON.stringify(this.notices, null, 2), 'utf-8');

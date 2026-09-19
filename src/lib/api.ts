@@ -316,3 +316,22 @@ export async function triggerAwsSync(token?: string | null): Promise<{ success: 
   return json;
 }
 
+export async function pushDummyDataToAws(token?: string | null): Promise<{
+  success: boolean;
+  message: string;
+  result: { noticesCount: number; auditsCount: number; parentsCount: number };
+  status: AwsDatabaseStatus;
+}> {
+  const authToken = token || localStorage.getItem('amka_token') || '';
+  const res = await fetch(`${API_BASE}/aws/seed-dummy`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+    },
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json.error || 'Failed to push dummy data to AWS DynamoDB');
+  return json;
+}
+
