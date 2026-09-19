@@ -1,0 +1,58 @@
+[
+  {
+    "id": "parent_1789813746606_91l2",
+    "name": "Dr. Robert Sterling",
+    "email": "r.sterling@example.org",
+    "phone": "+1 555-888-2190",
+    "studentRollNo": "AMKA-2025-CS-204",
+    "studentName": "Liam Sterling",
+    "relationship": "Father",
+    "department": "Academic Affairs",
+    "status": "approved",
+    "registeredAt": "2026-09-19T10:29:06.606Z",
+    "token": "token_parent_0bpu5cx1",
+    "approvedAt": "2026-09-19T10:29:09.215Z",
+    "approvedBy": "Dr. Alistair Vance (Chief Registrar & Provost)"
+  },
+  {
+    "id": "parent_001",
+    "name": "Mrs. Elena Rostova",
+    "email": "elena.rostova@gmail.com",
+    "phone": "+1 (555) 234-8901",
+    "studentRollNo": "AMKA-2024-CS-042",
+    "studentName": "Alex Rostova",
+    "relationship": "Mother",
+    "department": "Academic Affairs",
+    "status": "approved",
+    "registeredAt": "2026-09-15T10:00:00.000Z",
+    "approvedAt": "2026-09-15T14:30:00.000Z",
+    "approvedBy": "Dr. Alistair Vance (Registrar)",
+    "token": "token_parent_elena_001"
+  },
+  {
+    "id": "parent_002",
+    "name": "Mr. David K. Chen",
+    "email": "david.chen.fam@outlook.com",
+    "phone": "+1 (555) 871-3320",
+    "studentRollNo": "AMKA-2025-ENG-118",
+    "studentName": "Marcus Chen",
+    "relationship": "Father",
+    "department": "Academic Affairs",
+    "status": "pending",
+    "registeredAt": "2026-09-19T02:15:00.000Z",
+    "token": "token_parent_david_002"
+  },
+  {
+    "id": "parent_003",
+    "name": "Sarah M. Jenkins",
+    "email": "sjenkins.legal@westnet.org",
+    "phone": "+1 (555) 440-1922",
+    "studentRollNo": "AMKA-2024-BIO-077",
+    "studentName": "Chloe Jenkins",
+    "relationship": "Guardian",
+    "department": "Student Affairs & Welfare",
+    "status": "pending",
+    "registeredAt": "2026-09-19T04:40:00.000Z",
+    "token": "token_parent_sarah_003"
+  }
+]
